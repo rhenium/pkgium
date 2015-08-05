@@ -1,0 +1,24 @@
+# Maintainer: Kazuki Yamaguchi <k@rhe.jp>
+pkgname=aribb25
+pkgver=0.2.6
+pkgrel=1
+pkgdesc='Basic implementation of the ARIB STD-B25 public standard. Forked from libarib25, originally written by MOGI, Kazuhiro'
+arch=('i686' 'x86_64')
+url='http://git.videolan.org/?p=aribb25.git;a=summary'
+license=('ISC')
+depends=('pcsclite')
+source=("https://get.videolan.org/aribb25/${pkgver}/aribb25-${pkgver}.tar.gz")
+md5sums=('f797a8f8a1bab4361d2111046aca58b6')
+
+build() {
+  cd "$pkgname-$pkgver"
+
+  ./configure --prefix=/usr
+  make
+}
+
+package() {
+  cd "$pkgname-$pkgver"
+
+  make DESTDIR="$pkgdir/" install
+}
