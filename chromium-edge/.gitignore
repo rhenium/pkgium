@@ -1,0 +1,8 @@
+src
+depot_tools
+.gclient
+.gclient_entries
+BUILD_VERSION
+python-path
+makepkg/google-chrome-*.rpm
+makepkg/pkg

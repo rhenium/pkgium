@@ -1,0 +1,34 @@
+update_resources() {
+    xdg-icon-resource forceupdate --theme hicolor &> /dev/null
+    update-desktop-database -q
+}
+
+instructions() {
+  /bin/cat << EOF
+
+=> To disable other flash plugins:
+   Type chrome://plugins/ in the adress bar and press Enter
+   Click on Details button on the top right
+   Click on Disable near all the Flash plugins except the first one
+
+EOF
+}
+
+post_install() {
+    if [[ "$(cat etc/chromium-edge/default)" == *ppapi* ]]; then
+        sed 's|--ppapi-flash-path=/usr/lib/chromium-edge/PepperFlash/libpepflashplayer.so --ppapi-flash-version=[0-9.]*||' -i /etc/chromium-edge/default
+    fi
+    instructions
+    update_resources
+}
+
+post_upgrade() {
+    post_install
+}
+
+post_remove() {
+    if [[ -e etc/chromium-edge/default ]]; then
+        sed 's|--ppapi-flash-path=/usr/lib/chromium-edge/PepperFlash/libpepflashplayer.so --ppapi-flash-version=[0-9.]*||' -i /etc/chromium-edge/default
+    fi
+    update_resources
+}

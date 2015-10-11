@@ -1,6 +1,6 @@
 /*/src
 /*/pkg
-/*/*.pkg.tar.xz
+*.pkg.tar.xz
 /*/*.tar.xz
 /*/*.tar.gz
-.*.swp
+.*.sw*
