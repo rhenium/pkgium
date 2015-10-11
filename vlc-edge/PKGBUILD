@@ -45,7 +45,7 @@ build() {
               --enable-nls \
               --enable-lirc=auto \
               --with-kde-solid=no \
-#              RCC=/usr/bin/rcc-qt4
+              RCC=/usr/bin/rcc-qt4
 
   make
 }
