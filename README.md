@@ -16,3 +16,6 @@ VLC で MULTI2 復号されていない ts ファイルを再生するのに必�
 
 ## chromium-edge
 git master の Chromium と PPAPI Flash をまとめたパッケージを作るためのスクリプト
+
+## pacman-mirrorlist-dummy
+provides=(pacman-mirrorlist) なカスタムミラーリスト（日本のミラーサーバーのみ）
