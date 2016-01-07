@@ -19,3 +19,7 @@ git master の Chromium と PPAPI Flash をまとめたパッケージを作る�
 
 ## pacman-mirrorlist-dummy
 provides=(pacman-mirrorlist) なカスタムミラーリスト（日本のミラーサーバーのみ）
+
+## libskk / fcitx-skk
+Fcitx から SKK を使うためのもの。https://github.com/rhenium 以下にあるわたしの fork をインストールするための PKGBUILD
+（カスタマイズ無しのものは Arch Linux の community リポジトリにあります）
