@@ -20,8 +20,7 @@ sha1sums=('c525645ca45eb25b64bba79e410f92111499bcd1'
           '930fad0d42b49736fae5e255f2e504554cc838d5'
           'c88f5af8aaf339f09769aeaca85151e5b1affa79'
           '93d3aeab979016a5a5fed65d81cb4caae8b222cb'
-          '4f53fdb9924d3dc8a8e845422991232163f85fd1'
-          'a641328dd3189271f224e952a5a32f8bb9336a83')
+          '4f53fdb9924d3dc8a8e845422991232163f85fd1')
 
 metadata="$(curl -sL "https://dl.google.com/linux/chrome/rpm/stable/x86_64/repodata/other.xml.gz" | gzip -df)"
 _rpm_name="$(echo "${metadata}" | grep -e "unstable" | awk -v FS='name="' -v RS='" ' '$0=$2' | head -n 1)"
@@ -66,10 +65,11 @@ package() {
 
   install -Dm755 chrome "${pkgdir}/usr/lib/chromium-edge/chrome"
   install -Dm4755 -o root -g root chrome_sandbox "${pkgdir}/usr/lib/chromium-edge/chrome-sandbox"
-  install -Dm755 chromedriver "${pkgdir}/usr/lib/chromium-edge/chromedriver"
-  ln -s /usr/lib/chromium-edge/chromedriver "$pkgdir/usr/bin/chromedriver-edge"
+  # install -Dm755 chromedriver "${pkgdir}/usr/lib/chromium-edge/chromedriver"
+  # ln -s /usr/lib/chromium-edge/chromedriver "$pkgdir/usr/bin/chromedriver-edge"
   install -Dm644 icudtl.dat "${pkgdir}/usr/lib/chromium-edge/icudtl.dat"
-  install -Dm755 {*.pak,libffmpegsumo.so,libwidevinecdm.so,libwidevinecdmadapter.so,nacl_helper{,_bootstrap,_nonsfi},nacl_irt_*.nexe} "${pkgdir}/usr/lib/chromium-edge"
+  install -Dm755 {*.pak,libffmpegsumo.so,libwidevinecdm.so,libwidevinecdmadapter.so} "${pkgdir}/usr/lib/chromium-edge"
+  # install -Dm755 {nacl_helper{,_bootstrap,_nonsfi},nacl_irt_*.nexei} "${pkgdir}/usr/lib/chromium-edge"
   install -Dm644 pnacl/pnacl_public_pnacl_json "${pkgdir}/usr/lib/chromium-edge/pnacl/pnacl_public_pnacl_json"
   install -Dm644 pnacl/pnacl_public_x86_64_libpnacl_irt_shim_a "${pkgdir}/usr/lib/chromium-edge/pnacl/pnacl_public_x86_64_libpnacl_irt_shim_a"
   find locales -type f -name "*.pak" -exec install -Dm644 '{}' "${pkgdir}/usr/lib/chromium-edge/{}" \;

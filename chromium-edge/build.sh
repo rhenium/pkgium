@@ -85,7 +85,9 @@ update() {
     v8_use_snapshot=false
   
     enable_hidpi=0
-    enable_widevine=1
+    use_sysroot=0
+    enable_topchrome_md=1
+    disable_nacl=1
   "
   
   cd "$_pwd/src"
@@ -105,7 +107,8 @@ build() {
   # ln -sf /usr/lib/libstdc++.so.6 "$_pwd/src/third_party/llvm-build/Release+Asserts/lib/libstdc++.so.6"
   
   cd "$_pwd/src"
-  ninja -j4 -C out/Release chrome chrome_sandbox chromedriver || exit
+  # ninja -j4 -C out/Release chrome chrome_sandbox chromedriver || exit
+  ninja -j4 -C out/Release chrome chrome_sandbox || exit
 }
 
 package() {
