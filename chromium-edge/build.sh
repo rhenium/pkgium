@@ -27,7 +27,7 @@ update() {
   if [ -d depot_tools ]; then
     svn update depot_tools
   else
-    svn checkout http://src.chromium.org/svn/trunk/tools/depot_tools
+    svn checkout https://src.chromium.org/svn/trunk/tools/depot_tools
   fi
   
   ###############################
