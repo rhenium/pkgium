@@ -1,0 +1,18 @@
+pkgname=pacman-mirrorlist-japan
+pkgver=1
+pkgrel=1
+pkgdesc="pacman-mirrorlist for Japan"
+arch=("any")
+url="https://www.archlinux.org/mirrorlist/"
+license=("GPL")
+provides=(pacman-mirrorlist)
+conflicts=(pacman-mirrorlist)
+backup=(etc/pacman.d/mirrorlist)
+source=(mirrorlist)
+md5sums=('62b017105419f0e5d7896fd67b4325ee')
+sha256sums=('ad0787cd9dde3cc69b90b773e5e8b72f0cdcd169b22890f2dbe6e26cac4b26b6')
+
+package() {
+  mkdir -p $pkgdir/etc/pacman.d
+  install -m644 $srcdir/mirrorlist $pkgdir/etc/pacman.d/
+}

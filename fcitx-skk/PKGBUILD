@@ -1,0 +1,31 @@
+pkgname=fcitx-skk-pkgium
+pkgver=0.1.2.r11.ga153713
+pkgrel=1
+pkgdesc="Fcitx Wrapper for skk."
+arch=('i686' 'x86_64')
+url="https://github.com/rhenium/fcitx-skk"
+license=('GPL3')
+depends=('fcitx' 'libskk')
+makedepends=('git' 'cmake' 'intltool')
+provides=(fcitx-skk)
+conflicts=(fcitx-skk)
+source=('git+https://github.com/rhenium/fcitx-skk.git')
+md5sums=('SKIP')
+_name=fcitx-skk
+
+pkgver() {
+  cd "${srcdir}/${_name}"
+  git describe --long | sed 's/\([^-]*-g\)/r\1/;s/-/./g'
+}
+
+build() {
+  cd "${srcdir}/${_name}"
+
+  cmake -DCMAKE_INSTALL_PREFIX=/usr .
+}
+
+package() {
+  cd "${srcdir}/${_name}"
+
+  make DESTDIR="${pkgdir}" install
+}

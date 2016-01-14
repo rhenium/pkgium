@@ -1,0 +1,33 @@
+pkgname=libskk-pkgium
+pkgver=1.0.1.r55.g83d449d
+pkgrel=1
+pkgdesc='GObject-based library to deal with Japanese kana-to-kanji conversion method'
+arch=('i686' 'x86_64')
+url='https://github.com/rhenium/libskk'
+license=('GPL3')
+provides=(libskk)
+conflicts=(libskk)
+depends=('libgee' 'json-glib')
+makedepends=('git' 'pkg-config' 'intltool' 'gnome-common' 'libgee')
+source=('git+https://github.com/rhenium/libskk.git')
+md5sums=('SKIP')
+_name=libskk
+
+pkgver() {
+  cd "${srcdir}/${_name}"
+  git describe --long | sed 's/\([^-]*-g\)/r\1/;s/-/./g'
+}
+
+build() {
+  cd "${srcdir}/${_name}"
+
+  ./autogen.sh
+  ./configure --prefix=/usr
+  make
+}
+
+package() {
+  cd "${srcdir}/${_name}"
+
+  make DESTDIR="${pkgdir}" install
+}
