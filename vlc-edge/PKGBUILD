@@ -7,7 +7,7 @@
 
 _name=vlc
 pkgname=vlc-edge
-pkgver=r2.2.0.git.4902.ge4ea3a0
+pkgver=r2.2.0.git.6402.g04236fb
 pkgrel=1
 pkgdesc="A multi-platform MPEG, VCD/DVD, and DivX player (GIT Version; with suffix)"
 arch=('i686' 'x86_64')
@@ -45,6 +45,7 @@ build() {
               --enable-nls \
               --enable-lirc=auto \
               --with-kde-solid=no \
+              --disable-avcodec \
               RCC=/usr/bin/rcc-qt4
 
   make
