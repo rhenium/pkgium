@@ -38,7 +38,7 @@ update() {
     fetch blink --nosvn=true
   fi
   cd "$_pwd/src"
-  git pull upstream master --no-edit || exit
+  git pull origin master --no-edit || exit
   gclient sync --nohooks
   
   ###############################
@@ -58,7 +58,6 @@ update() {
   export CFLAGS="-march=corei7-avx -mtune=corei7-avx -O2 -pipe"
   export CXXFLAGS="$CFLAGS"
   
-    #host_clang=$clang
   export GYP_DEFINES="
     clang=$clang
     clang_use_chrome_plugins=0
@@ -82,11 +81,8 @@ update() {
     ffmpeg_branding=Chrome
     proprietary_codecs=1
   
-    v8_use_snapshot=false
-  
     enable_hidpi=0
     use_sysroot=0
-    enable_topchrome_md=1
     disable_nacl=1
   "
   

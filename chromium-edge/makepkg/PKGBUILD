@@ -73,6 +73,7 @@ package() {
   install -Dm644 pnacl/pnacl_public_pnacl_json "${pkgdir}/usr/lib/chromium-edge/pnacl/pnacl_public_pnacl_json"
   install -Dm644 pnacl/pnacl_public_x86_64_libpnacl_irt_shim_a "${pkgdir}/usr/lib/chromium-edge/pnacl/pnacl_public_x86_64_libpnacl_irt_shim_a"
   find locales -type f -name "*.pak" -exec install -Dm644 '{}' "${pkgdir}/usr/lib/chromium-edge/{}" \;
+  install -Dm644 {natives,snapshot}_blob.bin "${pkgdir}/usr/lib/chromium-edge"
 
   for _size in 16 22 24 32 48 128 256; do
     case "${_size}" in
