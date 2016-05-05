@@ -23,3 +23,6 @@ provides=(pacman-mirrorlist) なカスタムミラーリスト（日本のミラ
 ## libskk / fcitx-skk
 Fcitx から SKK を使うためのもの。https://github.com/rhenium 以下にあるわたしの fork をインストールするための PKGBUILD
 （カスタマイズ無しのものは Arch Linux の community リポジトリにあります）
+
+## fontconfig-infinality
+AUR の fontconfig-infinality は中身が fontconfig-infinality-ultimate（= 別物）になってしまったため作成しなおした
