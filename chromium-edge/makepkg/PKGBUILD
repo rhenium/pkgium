@@ -1,6 +1,6 @@
 # Maintainer: rhenium <rhenium@rhe.jp>
 pkgname=chromium-edge
-pkgver=$(cat "$BUILD_ROOT/BUILD_VERSION")
+pkgver=54.0.2810.42
 pkgrel=1
 pkgdesc="An open-source browser project that aims to build a safer, faster, and more stable way for all users to experience the web"
 arch=(x86_64)
@@ -32,15 +32,14 @@ source+=("${_rpm_name}-${_rpm_ver}-${_rpm_rel}.x86_64.rpm::https://dl.google.com
 sha1sums+=("SKIP")
 noextract+=("${_rpm_name}-${_rpm_ver}-${_rpm_rel}.x86_64.rpm")
 
-prepare() {
-  echo do nothing
+pkgver() {
+  cd "$BUILD_ROOT/src"
+  basever=$(cat chrome/VERSION | sed -e 's/^.*=//' | head -n3 | xargs | sed -e 's/ /./g')
+  patchlevel=$(git rev-list origin/master..HEAD --count)
+  echo "$basever.$patchlevel"
 }
 
 build() {
-  echo do nothing
-}
-
-check() {
   echo do nothing
 }
 
@@ -69,7 +68,6 @@ package() {
   # ln -s /usr/lib/chromium-edge/chromedriver "$pkgdir/usr/bin/chromedriver-edge"
   install -Dm644 icudtl.dat "${pkgdir}/usr/lib/chromium-edge/icudtl.dat"
   install -Dm755 {*.pak,libffmpegsumo.so,libwidevinecdm.so,libwidevinecdmadapter.so} "${pkgdir}/usr/lib/chromium-edge"
-  # install -Dm755 {nacl_helper{,_bootstrap,_nonsfi},nacl_irt_*.nexei} "${pkgdir}/usr/lib/chromium-edge"
   install -Dm644 pnacl/pnacl_public_pnacl_json "${pkgdir}/usr/lib/chromium-edge/pnacl/pnacl_public_pnacl_json"
   install -Dm644 pnacl/pnacl_public_x86_64_libpnacl_irt_shim_a "${pkgdir}/usr/lib/chromium-edge/pnacl/pnacl_public_x86_64_libpnacl_irt_shim_a"
   find locales -type f -name "*.pak" -exec install -Dm644 '{}' "${pkgdir}/usr/lib/chromium-edge/{}" \;
