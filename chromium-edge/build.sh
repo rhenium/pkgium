@@ -23,10 +23,10 @@ update() {
   git -C depot_tools pull origin master
 
   echo "obtaining source...."
-  [ ! -d src ] && fetch blink --nosvn=true
+  [ ! -d src ] && fetch blink
   cd src
   git pull origin master --no-edit || exit
-  gclient sync --nohooks
+  gclient sync --nohooks || exit
 
   ###############################
   ### configure chromium
@@ -59,7 +59,26 @@ update() {
 
   cd "$_pwd/src"
   gclient runhooks || exit
-  python build/gyp_chromium.py
+
+cat <<EOF > out/Default/args.gn
+enable_remoting = false
+enable_widevine = true
+ffmpeg_branding = "Chrome"
+google_api_key = "AIzaSyDwr302FpOSkGRpLlUpPThNTDPbXcIn_FM"
+google_default_client_id = "413772536636.apps.googleusercontent.com"
+google_default_client_secret = "0ZChLK6AxeA3Isu96MkwqDR4"
+is_debug = false
+is_official_build = true
+proprietary_codecs = true
+use_sysroot = false
+enable_nacl = false
+remove_webcore_debug_symbols = true
+symbol_level = 0
+EOF
+
+  gn gen out/Default || exit
+
+  #python build/gyp_chromium.py
 }
 
 build() {
@@ -70,7 +89,7 @@ build() {
   ln -sf /usr/lib/libncursesw.so.6 "$_pwd/src/third_party/llvm-build/Release+Asserts/lib/libtinfo.so.5"
 
   cd "$_pwd/src"
-  ninja -j4 -C out/Release chrome chrome_sandbox || exit
+  ninja -j4 -C out/Default chrome chrome_sandbox || exit
 }
 
 package() {

@@ -1,6 +1,6 @@
 # Maintainer: rhenium <rhenium@rhe.jp>
 pkgname=chromium-edge
-pkgver=54.0.2810.42
+pkgver=54.0.2835.12
 pkgrel=1
 pkgdesc="An open-source browser project that aims to build a safer, faster, and more stable way for all users to experience the web"
 arch=(x86_64)
@@ -58,7 +58,7 @@ package() {
   sed "s|%%VERSION%%|${_version}|g" -i "${pkgdir}/etc/chromium-edge/pepper-flash"
 
   # from open
-  cd "$BUILD_ROOT/src/out/Release"
+  cd "$BUILD_ROOT/src/out/Default"
   install -Dm644 "$BUILD_ROOT/src/LICENSE" "${pkgdir}/usr/share/licenses/chromium-edge/LICENSE"
   install -Dm644 chrome.1 "${pkgdir}/usr/share/man/man1/chromium-edge.1"
 
@@ -67,9 +67,10 @@ package() {
   # install -Dm755 chromedriver "${pkgdir}/usr/lib/chromium-edge/chromedriver"
   # ln -s /usr/lib/chromium-edge/chromedriver "$pkgdir/usr/bin/chromedriver-edge"
   install -Dm644 icudtl.dat "${pkgdir}/usr/lib/chromium-edge/icudtl.dat"
-  install -Dm755 {*.pak,libffmpegsumo.so,libwidevinecdm.so,libwidevinecdmadapter.so} "${pkgdir}/usr/lib/chromium-edge"
-  install -Dm644 pnacl/pnacl_public_pnacl_json "${pkgdir}/usr/lib/chromium-edge/pnacl/pnacl_public_pnacl_json"
-  install -Dm644 pnacl/pnacl_public_x86_64_libpnacl_irt_shim_a "${pkgdir}/usr/lib/chromium-edge/pnacl/pnacl_public_x86_64_libpnacl_irt_shim_a"
+  install -Dm755 {*.pak,libwidevinecdm.so,libwidevinecdmadapter.so} "${pkgdir}/usr/lib/chromium-edge"
+  # install -Dm755 {*.pak,libffmpeg.so,libwidevinecdm.so,libwidevinecdmadapter.so} "${pkgdir}/usr/lib/chromium-edge"
+  # install -Dm644 pnacl/pnacl_public_pnacl_json "${pkgdir}/usr/lib/chromium-edge/pnacl/pnacl_public_pnacl_json"
+  # install -Dm644 pnacl/pnacl_public_x86_64_libpnacl_irt_shim_a "${pkgdir}/usr/lib/chromium-edge/pnacl/pnacl_public_x86_64_libpnacl_irt_shim_a"
   find locales -type f -name "*.pak" -exec install -Dm644 '{}' "${pkgdir}/usr/lib/chromium-edge/{}" \;
   install -Dm644 {natives,snapshot}_blob.bin "${pkgdir}/usr/lib/chromium-edge"
 
