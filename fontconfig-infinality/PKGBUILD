@@ -1,0 +1,30 @@
+pkgname=fontconfig-infinality
+pkgver=r101.91eb8e6
+pkgrel=1
+arch=(any)
+license=('MIT')
+url='https://github.com/Infinality/fontconfig-infinality'
+depends=('fontconfig')
+source=('git+https://github.com/Infinality/fontconfig-infinality.git')
+sha256sums=('SKIP')
+backup=(
+	# user may edit
+	'etc/fonts/infinality/infinality.conf'
+	# infctl.h may edit this (symlink)
+	'etc/fonts/conf.d/52-infinality.conf'
+)
+
+pkgver() {
+	cd "$srcdir"/fontconfig-infinality
+	echo "r$(git rev-list --count HEAD).$(git rev-parse --short HEAD)"
+}
+
+package() {
+	cd "$srcdir"/fontconfig-infinality
+
+	mkdir -p "$pkgdir"/etc/fonts
+	cp -r {conf.d,conf.avail,infinality} "$pkgdir"/etc/fonts
+
+	mkdir -p "$pkgdir"/usr/bin
+	ln -s /etc/fonts/infinality/infctl.sh "$pkgdir"/usr/bin/infctl.sh
+}
