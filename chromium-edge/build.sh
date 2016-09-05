@@ -23,7 +23,9 @@ update() {
   git -C depot_tools pull origin master
 
   echo "obtaining source...."
-  [ ! -d src ] && fetch blink
+  if [ ! -d src ]; then
+    fetch chromium || exit
+  fi
   cd src
   git pull origin master --no-edit || exit
   gclient sync --nohooks || exit
@@ -60,6 +62,8 @@ update() {
   cd "$_pwd/src"
   gclient runhooks || exit
 
+  gn gen out/Default || exit
+
 cat <<EOF > out/Default/args.gn
 enable_remoting = false
 enable_widevine = true
@@ -74,6 +78,7 @@ use_sysroot = false
 enable_nacl = false
 remove_webcore_debug_symbols = true
 symbol_level = 0
+treat_warnings_as_errors = false
 EOF
 
   gn gen out/Default || exit
