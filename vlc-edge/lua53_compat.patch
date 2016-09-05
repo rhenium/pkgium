@@ -1,0 +1,12 @@
+diff --git a/modules/lua/vlc.h b/modules/lua/vlc.h
+index efd94f1..85c7fc1 100644
+--- a/modules/lua/vlc.h
++++ b/modules/lua/vlc.h
+@@ -38,6 +38,7 @@
+ #include <vlc_stream.h>
+ #include <vlc_demux.h>
+ 
++#define LUA_COMPAT_APIINTCASTS
+ #define LUA_COMPAT_MODULE
+ #include <lua.h>        /* Low level lua C API */
+ #include <lauxlib.h>    /* Higher level C API */

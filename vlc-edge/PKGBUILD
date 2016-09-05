@@ -7,7 +7,7 @@
 
 _name=vlc
 pkgname=vlc-edge
-pkgver=r2.2.0.git.4902.ge4ea3a0
+pkgver=r2.2.0.git.8771.g7f70e1c
 pkgrel=1
 pkgdesc="A multi-platform MPEG, VCD/DVD, and DivX player (GIT Version; with suffix)"
 arch=('i686' 'x86_64')
@@ -21,8 +21,10 @@ depends=('a52dec' 'libdvbpsi' 'libxpm' 'qt4' 'sdl_image'
          'kdelibs' 'opus' 'gtk2')
 makedepends=('aribb24' 'aribb25')
 install=vlc.install
-source=('git://git.videolan.org/vlc.git')
-md5sums=('SKIP')
+source=('git://git.videolan.org/vlc.git'
+        lua53_compat.patch)
+md5sums=('SKIP'
+         '96d3b346d9149ffb1b430066dfb6249a')
 
 pkgver() {
   cd "${srcdir}/${_name}"
@@ -33,6 +35,8 @@ prepare() {
   cd "${srcdir}/${_name}"
 
   sed -i -e 's:truetype/ttf-dejavu:TTF:g' modules/visualization/projectm.cpp # font path
+
+  patch -p1 < "${srcdir}/lua53_compat.patch"
 }
 
 build() {
