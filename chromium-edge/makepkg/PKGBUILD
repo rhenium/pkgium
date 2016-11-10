@@ -1,6 +1,6 @@
 # Maintainer: rhenium <rhenium@rhe.jp>
 pkgname=chromium-edge
-pkgver=55.0.2848.5
+pkgver=56.0.2915.8
 pkgrel=1
 pkgdesc="An open-source browser project that aims to build a safer, faster, and more stable way for all users to experience the web"
 arch=(x86_64)
@@ -44,12 +44,10 @@ package() {
 
   install -Dm755 chrome "${pkgdir}/usr/lib/chromium-edge/chrome"
   install -Dm4755 -o root -g root chrome_sandbox "${pkgdir}/usr/lib/chromium-edge/chrome-sandbox"
-  install -Dm644 icudtl.dat "${pkgdir}/usr/lib/chromium-edge/icudtl.dat"
-  # install -Dm755 {libwidevinecdm.so,libwidevinecdmadapter.so} "${pkgdir}/usr/lib/chromium-edge"
-  install -Dm755 *.so "${pkgdir}/usr/lib/chromium-edge"
-  install -Dm644 *.pak "${pkgdir}/usr/lib/chromium-edge"
-  find locales -type f -name "*.pak" -exec install -Dm644 '{}' "${pkgdir}/usr/lib/chromium-edge/{}" \;
-  install -Dm644 {natives,snapshot}_blob.bin "${pkgdir}/usr/lib/chromium-edge"
+
+  cp -a {*.pak,*.bin,icudtl.dat} "${pkgdir}/usr/lib/chromium-edge/"
+  cp -a locales gen/content/content_resources.pak "${pkgdir}/usr/lib/chromium-edge/"
+  # cp -a libwidevinecdmadapter.so "${pkgdir}/usr/lib/chromium-edge/"
 
   for _size in 16 22 24 32 48 128 256; do
     case "${_size}" in

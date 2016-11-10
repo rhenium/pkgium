@@ -1,9 +1,5 @@
 #!/bin/sh
-
-###############################
-# Build options
-###############################
-clang=1
+set -e
 
 _pwd=$(pwd)
 export PATH="$_pwd/python-path:$_pwd/depot_tools:$PATH"
@@ -24,88 +20,71 @@ update() {
 
   echo "obtaining source...."
   if [ ! -d src ]; then
-    fetch chromium || exit
+    fetch chromium
   fi
   cd src
-  git pull origin master --no-edit || exit
-  gclient sync --nohooks || exit
+  git pull origin master --no-edit
+  gclient sync --nohooks
 
-  ###############################
-  ### configure chromium
-  ###############################
   echo "configuring chromium...."
 
-  export CFLAGS="-march=corei7-avx -mtune=corei7-avx -O2 -pipe"
-  export CXXFLAGS="$CFLAGS"
-
-  export GYP_DEFINES="
-    clang=$clang
-    clang_use_chrome_plugins=0
-    fastbuild=1
-    werror=
-    linux_sandbox_path=/usr/lib/chromium-edge/chrome-sandbox
-    usb_ids_path=/usr/share/hwdata/usb.ids
-    release_extra_cflags='$CFLAGS'
-
-    google_api_key='AIzaSyDwr302FpOSkGRpLlUpPThNTDPbXcIn_FM'
-    google_default_client_id='413772536636.apps.googleusercontent.com'
-    google_default_client_secret='0ZChLK6AxeA3Isu96MkwqDR4'
-
-    ffmpeg_branding=Chrome
-    proprietary_codecs=1
-
-    enable_hidpi=0
-    use_sysroot=0
-    disable_nacl=1
-  "
-
   cd "$_pwd/src"
-  gclient runhooks || exit
+  gclient runhooks
 
-  gn gen out/Default || exit
+  gn gen out/Default
 
 cat <<EOF > out/Default/args.gn
+is_clang=false
+clang_use_chrome_plugins=false
+
 enable_remoting = false
+enable_hangout_services_extension = true
 enable_widevine = true
-ffmpeg_branding = "Chrome"
+enable_nacl = false
+enable_nacl_nonsfi = false
 google_api_key = "AIzaSyDwr302FpOSkGRpLlUpPThNTDPbXcIn_FM"
 google_default_client_id = "413772536636.apps.googleusercontent.com"
 google_default_client_secret = "0ZChLK6AxeA3Isu96MkwqDR4"
-is_debug = false
-is_official_build = true
+ffmpeg_branding = "Chrome"
+# is_official_build = true
+fieldtrial_testing_like_official_build = true
 proprietary_codecs = true
 use_sysroot = false
-enable_nacl = false
+linux_use_bundled_binutils = false
+is_debug = false
 remove_webcore_debug_symbols = true
 symbol_level = 0
 treat_warnings_as_errors = false
 EOF
 
-  gn gen out/Default || exit
-
-  #python build/gyp_chromium.py
+  gn gen out/Default
 }
 
 build() {
   echo "compiling...."
-
-  # WORKAROUND
-  # Bundled LLVM seems to need libtinfo.so.5
-  ln -sf /usr/lib/libncursesw.so.6 "$_pwd/src/third_party/llvm-build/Release+Asserts/lib/libtinfo.so.5"
-
   cd "$_pwd/src"
-  ninja -j4 -C out/Default chrome chrome_sandbox || exit
+
+  ninja -j4 -C out/Default chrome chrome_sandbox
 }
 
 package() {
   echo "making package...."
   cd "$_pwd/makepkg"
-  BUILD_ROOT="$_pwd" makepkg -f || exit
+
+  BUILD_ROOT="$_pwd" makepkg -f
 }
 
 case "$1" in
-  update) update ;;
-  build) build ;;
-  package) package ;;
-  *) update && build && package ;;
+  update)
+    update
+    ;;
+  build)
+    build
+    ;;
+  package)
+    package
+    ;;
+  *)
+    update && build && package
+    ;;
 esac
